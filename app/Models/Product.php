@@ -14,13 +14,12 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'price',
         'image',
     ];
 
     public function orders(): BelongsToMany
     {
-        return $this->belongsToMany(order::class)->withPivot('amount');
+        return $this->belongsToMany(order::class)->withPivot('amount', 'price');
     }
 
 //    public function orders(): HasMany
