@@ -10,32 +10,64 @@
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
 </head>
-
 <body>
-<nav>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.index') }}">Producten</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('orders.index') }}">Winkelmandje</a>
-                    </li>
-                </ul>
-            </div>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('products.index') }}">Producten</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('orders.index') }}">Winkelmandje</a>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{{ route('customers.index') }}">
+                        @CSRF
+                        <button type="submit" id="cust_1" name="id" value="1" size="2"
+                                class="ms-3 button bg-success">
+                            cust_1
+                        </button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{{ route('customers.index') }}">
+                        @CSRF
+                        <button type="submit" id="cust_2" name="id" value="2" size="2"
+                                class="ms-3 button bg-success">
+                            cust_2
+                        </button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{{ route('customers.index') }}">
+                        @CSRF
+                        <button type="submit" id="cust_3" name="id" value="3" size="2"
+                                class="ms-3 button bg-success">
+                            cust_3
+                        </button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form method="post" action="{{ route('customers.index') }}">
+                        @CSRF
+                        <button type="submit" id="cust_4" name="id" value="4" size="2"
+                                class="ms-3 button bg-success">
+                            cust_4
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
 </nav>
 <div class="container">
     <div class="row">
-
         {{ $slot }}
 
     </div>

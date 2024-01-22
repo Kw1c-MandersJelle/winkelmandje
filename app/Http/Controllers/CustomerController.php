@@ -3,16 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $customer = (int)$request->id;
+
+        $products = Product::all();
+
+        Session::put('name', $customer);
+        return view('products.index',
+            [
+                'products' => $products,
+            ]);
+
     }
 
     /**

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+
+use Illuminate\Support\Facades\Session;
 use Termwind\Components\Dd;
 
 class OrderController extends Controller
@@ -13,30 +17,40 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(order $order)
     {
-        $orders = Order::all();
-//        $amount = DB::table('order_product')->get()->pluck('amount')->toArray();
-
+        $orders = Order::all()->where('id', Session::get('name'));
+//        $orders_amount = DB::table('order_product')->find(Session::get('name'))->count('amount');
+        $order = $order->customer();
 
         return view('winkelmandje', [
             'orders' => $orders,
-//            'amount' => $amount,
+            'order' => $order,
+//            'orders_amount' => $orders_amount,
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(product $product, order $order, Request $request)
+    public function create(product $product, order $order, Request $request, customer $customer)
     {
         if ($request->isMethod('post')) {
             $amount = $request->input('amount');
 
+            $price = $product->price;
             $products = Product::all();
 
-            $order->id = 1;
-            $order->products()->attach($product->id, ['amount' => $amount]);
+            $order->id = Session::get('name');
+
+
+            $customer->orders()->find($customer->id);
+            
+
+            $order->products()->attach($product->id, [
+                'amount' => $amount,
+                'price' => $price
+            ]);
         }
         return view('products.index',
             [

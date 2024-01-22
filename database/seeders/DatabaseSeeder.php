@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,13 +18,20 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
-        \App\Models\Customer::factory()->create([
+        $customer = Customer::factory(4)->create([
             'name' => 'Test User',
-        ]);
+        ])
+            ->each(function (customer $customer) {
+                (Order::factory(1)
+                    ->create([
+                        'customer_id' => $customer->id
+                    ]));
+            });
+
 
         Product::factory(5)->sequence(
 

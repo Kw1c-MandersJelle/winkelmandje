@@ -18,7 +18,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'price' => random_int(1, 100),
+            'price' => fake()->numberBetween(1, 100)
         ];
     }
 }
