@@ -8,8 +8,7 @@
 
             @php($pivotData = $product->pivot) <br>
 
-
-            @php($productamountprice = $pivotData->amount * $product->price)
+            @php($productamountprice = $pivotData->amount * $product->price )
 
             <div class="container">
                 <div class="card" style="width: 18rem">
@@ -33,9 +32,8 @@
             </div>
         @endforeach
         <form action="" method="post">
-            {{--            {{ $orders_amount }}--}}
             <label>Payment</label>
-            {{--            <input type="text" id="price" name="price" size="2" value="{{ $total }}">--}}
+            <input type="text" id="price" name="price" size="2" value="{{ $price_total }}">
             <button>Finish Order!</button>
             @csrf
         </form>

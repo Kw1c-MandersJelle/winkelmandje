@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use Dotenv\Parser\Value;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,13 +21,22 @@ class OrderController extends Controller
     public function index(order $order)
     {
         $orders = Order::all()->where('id', Session::get('name'));
-//        $orders_amount = DB::table('order_product')->find(Session::get('name'))->count('amount');
+
+
+        $order_id = Session::get('name');
+        $price_total = DB::table('order_product')
+            ->where('order_id', '=', $order_id)
+            ->pluck('price_total')
+            ->sum();
+//
+
+
         $order = $order->customer();
 
         return view('winkelmandje', [
             'orders' => $orders,
             'order' => $order,
-//            'orders_amount' => $orders_amount,
+            'price_total' => $price_total,
         ]);
     }
 
@@ -38,6 +48,7 @@ class OrderController extends Controller
         if ($request->isMethod('post')) {
             $amount = $request->input('amount');
 
+
             $price = $product->price;
             $products = Product::all();
 
@@ -45,7 +56,7 @@ class OrderController extends Controller
 
 
             $customer->orders()->find($customer->id);
-            
+
 
             $order->products()->attach($product->id, [
                 'amount' => $amount,
