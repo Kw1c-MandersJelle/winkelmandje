@@ -2,8 +2,8 @@
     <div class="container">
         <div class="row">
             @foreach($products as $product)
-                <x-product :product="$product"></x-product>
-
+                @php($count = optional($product->pivot)->amount ?? 0)
+                <x-product :product="$product" :count="$count"></x-product>
             @endforeach
         </div>
     </div>

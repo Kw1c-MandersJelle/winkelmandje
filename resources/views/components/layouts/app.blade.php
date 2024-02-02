@@ -27,40 +27,15 @@
                     <a class="nav-link" href="{{ route('orders.index') }}">Winkelmandje</a>
                 </li>
                 <li class="nav-item">
-                    <form method="post" action="{{ route('customers.index') }}">
-                        @CSRF
-                        <button type="submit" id="cust_1" name="id" value="1" size="2"
-                                class="ms-3 button bg-success">
-                            cust_1
-                        </button>
-                    </form>
+                    <a class="nav-link" href="{{ route('ordered.index')}}">ordered orders</a>
                 </li>
-                <li class="nav-item">
-                    <form method="post" action="{{ route('customers.index') }}">
-                        @CSRF
-                        <button type="submit" id="cust_2" name="id" value="2" size="2"
-                                class="ms-3 button bg-success">
-                            cust_2
-                        </button>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="{{ route('customers.index') }}">
-                        @CSRF
-                        <button type="submit" id="cust_3" name="id" value="3" size="2"
-                                class="ms-3 button bg-success">
-                            cust_3
-                        </button>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="{{ route('customers.index') }}">
-                        @CSRF
-                        <button type="submit" id="cust_4" name="id" value="4" size="2"
-                                class="ms-3 button bg-success">
-                            cust_4
-                        </button>
-                    </form>
+                @foreach(\App\Models\Customer::all() as $customer)
+                    <li class="nav-item">
+                        <a href="/login/{{ $customer->id }}" class="btn btn-primary">{{$customer->name}}</a>
+                    </li>
+                @endforeach
+                <li>
+                    {{ auth()->user()->name ?? 'not logged in'}}
                 </li>
             </ul>
         </div>

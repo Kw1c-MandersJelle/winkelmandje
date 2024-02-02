@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
+use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rules\Enum;
 
 
 class ProductController extends Controller
@@ -14,11 +19,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $user_id = Auth::user()?->id;
+        $cartOrder = Order::where('customer_id', $user_id)->where('status', OrderStatus::CART)->first();
+        $allProducts = Product::all();
 
+        $products = $allProducts->merge($cartOrder ? $cartOrder->products : $allProducts);
 
         return view('products.index', [
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
@@ -27,7 +35,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-//        dd('d');
+        //
     }
 
     /**
@@ -43,6 +51,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+
         return view('products.show', [
             'product' => $product
         ]);

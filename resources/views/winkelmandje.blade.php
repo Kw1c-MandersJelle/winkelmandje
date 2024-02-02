@@ -1,15 +1,7 @@
 <x-layouts.app>
-    {{--    @dd(Session::Get('name') == $order->id)--}}
-    {{--    @if( Session::Get('name') == $order)--}}
-
-    @foreach ($orders as $order)
-
+    @if($order)
         @foreach ($order->products as $product)
-
-            @php($pivotData = $product->pivot) <br>
-
-            @php($productamountprice = $pivotData->amount * $product->price )
-
+            <br>
             <div class="container">
                 <div class="card" style="width: 18rem">
                     <img
@@ -20,24 +12,34 @@
                             {{ $product->name }}
                         </div>
                     </div>
+                    @livewire('DeleteCartProduct',
+                    [
+                    'orderproduct_id' => $product->pivot->id
+                    ])
                     <div class="card-body">
                         <div class="row">
-                            amount {{ $pivotData->amount }}
+                            amount {{ $product->pivot->amount }}
                         </div>
                         <div class="row">
-                            price = ${{ $productamountprice }}
+                            price = ${{ $product->pivot->amount * $product->price }}
                         </div>
                     </div>
                 </div>
             </div>
         @endforeach
-        <form action="" method="post">
+        <form method="post" action="{{ route('completeorder',$order) }}">
+            @csrf
             <label>Payment</label>
             <input type="text" id="price" name="price" size="2" value="{{ $price_total }}">
-            <button>Finish Order!</button>
-            @csrf
+            <button type="submit">Finish Order!</button>
         </form>
-    @endforeach
-    {{--    @endif--}}
-    {{ Session::Get('name') }}
+    @else
+        @if(Auth::user())
+            <div> there are no products in your shopping cart</div>
+        @else
+            <div>
+                please log in to see ur current shopping cart
+            </div>
+        @endif
+    @endif
 </x-layouts.app>

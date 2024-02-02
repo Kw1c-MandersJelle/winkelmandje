@@ -16,25 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'is_admin' => true,
         ]);
-        $customer = Customer::factory(4)->create([
-            'name' => 'Test User',
-        ])
-            ->each(function (customer $customer) {
-                (Order::factory(1)
-                    ->create([
-                        'customer_id' => $customer->id
-                    ]));
-            });
+//        Customer::factory(4)->create();
 
 
         Product::factory(5)->sequence(
-
             ['name' => 'banaan'],
             ['name' => 'appel'],
             ['name' => 'druif'],

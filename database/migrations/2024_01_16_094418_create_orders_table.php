@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
@@ -14,7 +15,8 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Customer::class)->constrained();
+            $table->foreignIdFor(Customer::class)->constrained('users');
+            $table->string('status')->default(OrderStatus::CART);
             $table->timestamps();
         });
     }

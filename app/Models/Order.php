@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,19 +14,23 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+    protected $casts = [
+        'status' => OrderStatus::class,
+    ];
 
-    public function customer(): HasOne
+    public function customer(): HasMany
     {
-        return $this->hasOne(customer::class);
+        return $this->hasMany(Customer::class);
     }
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(product::class)->withPivot('amount', 'price');
+        return $this->belongsToMany(Product::class)->withPivot('id', 'amount', 'price');
     }
 
-//    public function products(): HasMany
-//    {
-//        return $this->hasMany(product::class);
-//    }
+    public function orderProducts(): HasMany
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use Dotenv\Parser\Value;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -18,26 +20,21 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(order $order)
+    public function index()
     {
-        $orders = Order::all()->where('id', Session::get('name'));
+        $user_id = Auth::user()?->id;
+        $order = Order::where('customer_id', $user_id)->where('status', OrderStatus::CART)->first();
 
 
-        $order_id = Session::get('name');
         $price_total = DB::table('order_product')
-            ->where('order_id', '=', $order_id)
+            ->where('order_id', '=', $order?->id)
             ->pluck('price_total')
             ->sum();
-//
-
-
-        $order = $order->customer();
 
         return view('winkelmandje', [
-            'orders' => $orders,
             'order' => $order,
             'price_total' => $price_total,
-        ]);
+        ] ?? 'there are no products in your shopping cart');
     }
 
     /**
@@ -48,24 +45,25 @@ class OrderController extends Controller
         if ($request->isMethod('post')) {
             $amount = $request->input('amount');
 
-
             $price = $product->price;
             $products = Product::all();
 
             $order->id = Session::get('name');
 
 
-            $customer->orders()->find($customer->id);
-
-
-            $order->products()->attach($product->id, [
-                'amount' => $amount,
-                'price' => $price
-            ]);
+            if ($order->products->pluck('id')->contains($product->id)) {
+//                dd('dit product bestaat al');
+            } else {
+                $order->products()->attach($product->id, [
+                    'amount' => $amount,
+                    'price' => $price
+                ]);
+            }
         }
         return view('products.index',
             [
-                'products' => $products
+                'amount' => $amount,
+                'products' => $products,
             ]);
 
     }
@@ -105,8 +103,8 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy()
     {
-        //
+//
     }
 }
