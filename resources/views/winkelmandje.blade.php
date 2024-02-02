@@ -21,7 +21,7 @@
                             amount {{ $product->pivot->amount }}
                         </div>
                         <div class="row">
-                            price = ${{ $product->pivot->amount * $product->price }}
+                            price = ${{ $product->pivot->amount * $product->price }}.
                         </div>
                     </div>
                 </div>
